@@ -22,6 +22,8 @@
     let yVar = "ObjectPropertyID"
     let xVar = "TimestampId"
     let zVar = "Value"
+    let optionKey = "OptionsNew"
+    let labelVar = ["PointName"]
     
     // DATA (this should come pre-sorted from API)
     export let data = convertDateTime(TSData);
@@ -63,7 +65,8 @@
                     data: barData[1], 
                     x,
                     width,
-                    height
+                    height,
+                    optionKey
                 }
             }></ModeChartBarInstance>
         {/each}

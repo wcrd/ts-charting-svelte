@@ -6,12 +6,13 @@
     export let xVar = "TimestampId"
     export let zVar = "Value"
     export let optionKey = "OptionsNew"
+    export let labelVar = [];
 
     // DATA (this should come pre-sorted from API)
     export let data = []; // key (yVar): [ts_data]
 
     // extract the key; or make a default one
-    const legendKeyMap = data?.[0]?.[optionKey] || [...(new Set(data.map(d=>d[zVar])))].reduce((acc, c) => {acc[c]=c; return acc}, {})
+    const legendKeyMap = data?.[0]?.[optionKey] || [...(new Set(data.map(d=>d[zVar])))].reduce((acc, c) => {acc[c]="Undefined"; return acc}, {})
     console.debug(legendKeyMap)
 
     // define chart bound refs
@@ -39,9 +40,9 @@
     $: d3.select(gy)
         .call(d3.axisLeft(y).ticks(1))
         .call(g => g.select(".domain").remove())
-        .call(g => g.selectAll(".tick line").clone()
-            .attr("x2", width - marginLeft - marginRight)
-            .attr("stroke-opacity", 0.1))
+        // .call(g => g.selectAll(".tick line").clone()
+        //     .attr("x2", width - marginLeft - marginRight)
+        //     .attr("stroke-opacity", 0.1))
 
     // series color generator
     $: z = d3.scaleOrdinal([...Array(10).keys()], d3.schemeCategory10);
@@ -54,10 +55,10 @@
         <!-- Y-AXIS -->
         <g bind:this={gy} transform={`translate(${marginLeft},0)`}></g>
         <!-- SERIE PLOT -->
-    <g transform={`translate(0,${(0)/2})`}>
-        {#each data as record}
-            <rect x={x(record[xVar])} y={y(record[yVar])} height={y.bandwidth()} width={1} fill={z(record[zVar])}></rect>
-        {/each}
+        <g transform={`translate(0,${(0)/2})`}>
+            {#each data as record}
+                <rect x={x(record[xVar])} y={y(record[yVar])} height={y.bandwidth()} width={1} fill={z(record[zVar])}></rect>
+            {/each}
         </g>
     </svg>
     <!-- LEGEND -->
